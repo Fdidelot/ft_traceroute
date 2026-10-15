@@ -1,9 +1,19 @@
 #include "ft_traceroute.h"
 
+t_traceroute_data data =
+{ 
+    .packet_len = PACKET_SIZE,
+    .max_probes = DEFAULT_MAX_PROBES
+};
+
+static void init(void)
+{
+    get_ip_infos(&data);
+    open_sockets(&data);
+}
+
 int main(int argc, char **argv)
 {
-    t_traceroute_data data = {0};
-
     /* No arguments print the helper */
     if (argc == 1)
         print_helper();
@@ -11,5 +21,10 @@ int main(int argc, char **argv)
     /* Parsing the arguments */
     parse_args(&data, argc, argv);
 
-    return EXIT_SUCCESS;
+    init();
+
+    print_intro(data.ip_address, data.ip, MAX_HOPS, data.packet_len);
+    send_probes(&data);
+
+    clean_exit(EXIT_SUCCESS);
 }

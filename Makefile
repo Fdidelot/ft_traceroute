@@ -2,11 +2,16 @@ NAME = ft_traceroute
 
 PATH_OBJS	=	./objects/
 PATH_SRC	=	./sources/
-PATH_HEAD	= ./headers/
+PATH_HEAD	=	./headers/
 
 SRCS	=	main.c \
 			print.c \
-			parser.c
+			parser.c \
+			ip_infos.c \
+			sockets.c \
+			time.c \
+			exit.c \
+			probes.c
 
 vpath %.c $(PATH_SRC)
 
@@ -18,7 +23,7 @@ OBJS	=	$(addprefix $(PATH_OBJS),  $(SRCS:.c=.o))
 RM	=	rm -rf
 
 CC			=	gcc
-CFLAGS		+=	-Wall -Wextra -Werror
+CFLAGS		+=	-Wall -Wextra -Werror -O2
 CFLAGS		+=	-I $(PATH_HEAD)
 # LDLIBS		=
 all: $(NAME)
@@ -33,6 +38,8 @@ re: fclean all
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
+	sudo setcap cap_net_raw+ep $(NAME)
+
 
 $(PATH_OBJS)%.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< $(CFLAGS)
