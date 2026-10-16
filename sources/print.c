@@ -69,11 +69,12 @@ void    print_response(t_probes_info *probes, int ttl, size_t max_probes, bool n
             {
                 ip = probes[i].router_ip;
                 if (n_option)
-                    printf(" %s", ip);
+                    printf(" %s ", ip);
                 else
                 {
                     char hostname[MAX_HOST_SIZE];
                     reverse_dns_lookup(&probes[i].router, hostname);
+                    printf(" %s (%s)", hostname, ip);
                 }
             }
             printf("  %.3f ms", probes[i].rtt_ms);
