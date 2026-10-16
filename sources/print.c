@@ -6,9 +6,20 @@ void	print_helper(void)
     {
         "Usage:\n  ft_traceroute [options] host\n\
 Options:\n\
+  -p port  --port=port        Set the destination port to use.\n\
+                              (incremented by each probe, default is 33434)\n\
+  -m max_ttl  --max-hops=max_ttl\n\
+                              Set the max number of hops (max TTL to be\n\
+                              reached). Default is 30\n\
+  -q nqueries  --queries=nqueries\n\
+                              Set the number of probes per each hop. Default is\n\
+                              3\n\
   --help                      Read this help and exit\n\n\
 Arguments:\n\
-+     host          The host to traceroute to\n"
++     host          The host to traceroute to\n\
+      packetlen     The full packet length (default is the length of an IP\n\
+                    header plus 40). Can be ignored or increased to a minimal\n\
+                    allowed value\n"
     };
 	printf("%s", help_message);
     exit(EXIT_SUCCESS);
@@ -32,6 +43,12 @@ void    print_intro(const char *ip, const char *name,
 void    print_error(const char *msg)
 {
     perror(msg);
+    clean_exit(EXIT_FAILURE);
+}
+
+void    print_error_msg(const char *msg)
+{
+    fprintf(stderr, "%s",msg);
     clean_exit(EXIT_FAILURE);
 }
 

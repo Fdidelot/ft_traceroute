@@ -3,7 +3,9 @@
 t_traceroute_data data =
 { 
     .packet_len = PACKET_SIZE,
-    .max_probes = DEFAULT_MAX_PROBES
+    .probes_per_hops = DEFAULT_MAX_PROBES,
+    .max_hops = DEFAULT_MAX_HOPS,
+    .port = DEFAULT_PORT
 };
 
 static void init(void)
@@ -23,7 +25,7 @@ int main(int argc, char **argv)
 
     init();
 
-    print_intro(data.ip_address, data.ip, MAX_HOPS, data.packet_len);
+    print_intro(data.ip_address, data.ip, data.max_hops, data.packet_len);
     send_probes(&data);
 
     clean_exit(EXIT_SUCCESS);
