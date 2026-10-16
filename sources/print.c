@@ -4,7 +4,7 @@ void	print_helper(void)
 {
     static const char help_message[] =
     {
-        "Usage:\n  ft_traceroute [options] host\n\
+        "Usage:\n  ft_traceroute [ options ] host [ packetlen ]\n\
 Options:\n\
   -p port  --port=port        Set the destination port to use.\n\
                               (incremented by each probe, default is 33434)\n\
