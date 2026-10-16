@@ -24,7 +24,7 @@ static size_t string_to_number(const char *str, const char *error_msg)
 static int parse_options(int argc, char **argv, t_traceroute_data *data)
 {
     int         opt;
-    const char  *options = "p:m:q:";
+    const char  *options = "p:m:q:f:n";
     extern int  optind;
     extern int  optopt;
     extern int  opterr;
@@ -36,6 +36,7 @@ static int parse_options(int argc, char **argv, t_traceroute_data *data)
         {"port", required_argument, NULL,  'p' },
         {"max-hops", required_argument, NULL,  'm' },
         {"queries", required_argument, NULL,  'q' },
+        {"first", required_argument, NULL,  'f' },
         {NULL,   0,           NULL,  0 }
     };
 
@@ -45,6 +46,9 @@ static int parse_options(int argc, char **argv, t_traceroute_data *data)
         {
             case OPT_HELP:
                 print_helper();
+                break ;
+            case 'n':
+                data->n_opt = true;
                 break ;
             case 'p':
                 data->port = string_to_number(optarg, "Cannot handle `-p' option with arg");
@@ -62,6 +66,9 @@ static int parse_options(int argc, char **argv, t_traceroute_data *data)
                 if (probes > 10)
                     print_error_msg("no more than 10 probes per hop\n");
                 data->probes_per_hops = probes;
+                break ;
+            case 'f':
+                data->start_hop = string_to_number(optarg, "Cannot handle `-f' option with arg");
                 break ;
             default:
                 print_args_error("Bad option", *(argv + optind) == NULL ? *(argv + optind - 1): *(argv + optind));

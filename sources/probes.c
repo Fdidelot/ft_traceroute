@@ -113,7 +113,7 @@ void    send_probes(t_traceroute_data *data)
     unsigned int        port = data->port;
 
     int total_probes = 0;
-    for (int ttl = 1; ttl <= data->max_hops; ttl++)
+    for (int ttl = data->start_hop; ttl <= data->max_hops; ttl++)
     {
         memset(probes, 0, data->probes_per_hops * sizeof(*probes));
 
@@ -146,7 +146,7 @@ void    send_probes(t_traceroute_data *data)
             get_time(&received_at);
             probes[nb_probes].rtt_ms = time_diff(send_at, received_at);
         }
-        print_response(probes, ttl, data->probes_per_hops);
+        print_response(probes, ttl, data->probes_per_hops, data->n_opt);
         if (probes[0].router.sin_addr.s_addr == data->addr.sin_addr.s_addr &&
             probes[0].type == ICMP_DEST_UNREACH &&
             probes[0].code == ICMP_PORT_UNREACH)

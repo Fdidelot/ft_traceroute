@@ -14,6 +14,8 @@ Options:\n\
   -q nqueries  --queries=nqueries\n\
                               Set the number of probes per each hop. Default is\n\
                               3\n\
+  -f first_ttl  --first=first_ttl\n\
+                              Start from the first_ttl hop (instead from 1)\n\
   --help                      Read this help and exit\n\n\
 Arguments:\n\
 +     host          The host to traceroute to\n\
@@ -52,7 +54,7 @@ void    print_error_msg(const char *msg)
     clean_exit(EXIT_FAILURE);
 }
 
-void    print_response(t_probes_info *probes, int ttl, size_t max_probes)
+void    print_response(t_probes_info *probes, int ttl, size_t max_probes, bool n_option)
 {
     char *ip = NULL;
 
@@ -66,9 +68,13 @@ void    print_response(t_probes_info *probes, int ttl, size_t max_probes)
             if (!ip || strncmp(ip, probes[i].router_ip, INET_ADDRSTRLEN))
             {
                 ip = probes[i].router_ip;
-                char hostname[MAX_HOST_SIZE];
-                reverse_dns_lookup(&probes[i].router, hostname);
-                printf(" %s (%s)", hostname, ip);
+                if (n_option)
+                    printf(" %s", ip);
+                else
+                {
+                    char hostname[MAX_HOST_SIZE];
+                    reverse_dns_lookup(&probes[i].router, hostname);
+                }
             }
             printf("  %.3f ms", probes[i].rtt_ms);
         }

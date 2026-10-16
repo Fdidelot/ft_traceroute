@@ -21,6 +21,8 @@
 
 # define DEFAULT_MAX_HOPS 30
 # define DEFAULT_PORT 33434
+# define DEFAULT_MAX_PROBES 3
+# define DEFAULT_START_HOP 1
 # define PROBE_TIMEOUT_MS 1000
 
 # define PACKET_SIZE 60
@@ -28,8 +30,6 @@
 # define PACKET_SIZE_MAX 65000
 # define PACKET_REPLY_SIZE 2048
 # define MAX_HOST_SIZE 256
-
-# define DEFAULT_MAX_PROBES 3
 
 # define WRONG_ARGUMENTS 2
 # define ERROR -1
@@ -54,9 +54,12 @@ typedef struct probes_info
 
 typedef struct traceroute_data
 {
+    bool                n_opt;
+
     unsigned int        port;
     int                 max_hops;
     size_t              probes_per_hops;
+    int                 start_hop;
 
     char                *ip_address;
     char                ip[INET_ADDRSTRLEN];
@@ -75,7 +78,7 @@ void    print_intro(const char *, const char *,
                     const int, size_t);
 void    print_error(const char *);
 void    print_error_msg(const char *msg);
-void    print_response(t_probes_info *, int , size_t );
+void    print_response(t_probes_info *, int , size_t , bool);
 
 void    parse_args(t_traceroute_data *, int, char **);
 
